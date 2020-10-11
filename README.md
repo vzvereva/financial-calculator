@@ -2,24 +2,25 @@ The application implements spring-boot based service which:
 
 * uses JAVA 1.8 features 
 * exposes an endpoint which accept as a request payload the below json responses with json which for each client from the request calculates:
-** balance on a day when the request was made 
-** total turnover on accounts - from last day with known balance until when the request was made  
-** total incomes - from last day with known balance until when the request was made  
-** total expenditures - from last day with known balance until when the request was made  
+  * balance on a day when the request was made 
+  * total turnover on accounts - from last day with known balance until when the request was made  
+  * total incomes - from last day with known balance until when the request was made  
+  * total expenditures - from last day with known balance until when the request was made  
 
 ### Prerequisites:
 1. JDK v8
 2. Maven v3
 
 ### How to run 
-To start the application execute the following command:
+To start the application execute the following command:  
 mvn spring-boot:run 
 
 ### Sample Request
-POST /calculate
-Host: http://localhost:8080
+POST /calculate  
+Host: http://localhost:8080  
 Content-Type: application/json
 
+```json
 {
   "clients": {
     "client": [
@@ -102,3 +103,4 @@ Content-Type: application/json
     ]
   }
 }
+```
