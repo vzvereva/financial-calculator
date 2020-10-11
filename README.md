@@ -1,3 +1,4 @@
+### API description
 The application implements spring-boot based service which: 
 
 * uses JAVA 1.8 features 
@@ -16,8 +17,8 @@ To start the application execute the following command:
 mvn spring-boot:run 
 
 ### Sample Request
-POST /calculate  
-Host: http://localhost:8080  
+POST /calculate HTTP/1.1 
+Host: localhost:8080  
 Content-Type: application/json
 
 ```json
