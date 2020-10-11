@@ -8,6 +8,12 @@ The application implements spring-boot based service which:
   * total incomes - from last day with known balance until when the request was made  
   * total expenditures - from last day with known balance until when the request was made  
 
+### Assumptions
+* Balance date should not be in future.
+* Balance and all transactions of the same client are expected to be in the same currency.
+* Transactions made the same day when the balance was taken do not contribute to the result.
+* Future transactions are allowed but do not contribute to the result.   
+
 ### Prerequisites:
 1. JDK v8
 2. Maven v3
