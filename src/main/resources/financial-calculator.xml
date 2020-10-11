@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:int="http://www.springframework.org/schema/integration"
+             xmlns:int-http="http://www.springframework.org/schema/integration/http"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+  https://www.springframework.org/schema/beans/spring-beans.xsd
+  http://www.springframework.org/schema/integration
+  https://www.springframework.org/schema/integration/spring-integration.xsd
+  http://www.springframework.org/schema/integration/http
+  https://www.springframework.org/schema/integration/http/spring-integration-http.xsd">
+
+    <int:channel id="requestChannel"/>
+    <int:channel id="responseChannel"/>
+    <int:channel id="errorChannel"/>
+    <int:channel id="defaultExceptionChannel"/>
+    <int:channel id="clientExceptionChannel"/>
+
+    <int-http:inbound-gateway id="financialCalculatorRequestGateway"
+                              supported-methods="POST" request-channel="requestChannel"
+                              reply-channel="responseChannel"
+                              error-channel="errorChannel"
+                              path="/calculate"
+                              reply-timeout="50000"
+                              request-payload-type="org.example.financial.calculator.model.CalculatorRequest"
+                              message-converters="customMappingJackson2HttpMessageConverter">
+        <int-http:request-mapping consumes="application/json" produces="application/json"/>
+    </int-http:inbound-gateway>
+
+    <int:service-activator input-channel="requestChannel" ref="financialCalculatorService"
+                           method="calculate" output-channel="responseChannel" requires-reply="true"/>
+
+    <int:exception-type-router input-channel="errorChannel"
+                               default-output-channel="defaultExceptionChannel"
+                               resolution-required="false">
+        <int:mapping exception-type="org.example.financial.calculator.exception.ClientException"
+                     channel="clientExceptionChannel"/>
+    </int:exception-type-router>
+
+    <int:service-activator input-channel="clientExceptionChannel" ref="exceptionHandlerService"
+                           method="handleThrowable" requires-reply="true"/>
+
+    <int:service-activator input-channel="defaultExceptionChannel" ref="exceptionHandlerService"
+                           method="handleThrowable" requires-reply="true"/>
+
+</beans:beans>
