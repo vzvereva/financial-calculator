@@ -17,7 +17,7 @@ To start the application execute the following command:
 mvn spring-boot:run 
 
 ### Sample Request
-POST /calculate HTTP/1.1 
+POST /calculate HTTP/1.1  
 Host: localhost:8080  
 Content-Type: application/json
 
